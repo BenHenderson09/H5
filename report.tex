@@ -1,0 +1,144 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\title{H5}
+\author{Ben Henderson}
+\date{March 2025}
+
+\begin{document}
+
+\maketitle
+
+\vspace{5mm}
+
+\section{}
+
+The system dynamics are described by the following system of differential equations
+
+\begin{center}
+\dot{\alpha} = -0.31\alpha + 57.4r + 0.232\delta, \\
+\dot{r} = -0.016\alpha - 0.425r + 0.0203\delta,  \\
+\dot{\theta} = 56.7r \\
+\end{center}
+
+Now applying the Laplace transform
+
+\begin{center}
+\begin{align*}
+sA(s) &= -0.31A(s) + 57.4R(s) + 0.232\Delta(s), \\
+sR(s) &= -0.016A(s) - 0.425R(s) + 0.0203\Delta(s), \\
+s\Theta(s) &= 56.7R(s)
+\end{align*}
+\end{center}
+
+
+\vspace{20mm}
+
+Now for the transfer function where the pitch angle is output and the elevator deflection angle is input.
+
+\vspace{5mm}
+
+\[
+sA(s) + 0.31A(s) =  57.4R(s) + 0.232\Delta(s)
+\]
+
+\[
+A(s) = \frac{57.4R(s) + 0.232\Delta(s)}{s + 0.31} \\
+s\Theta(s) = 56.7R(s)
+\]
+
+\[
+R(s) = \frac{s\Theta(s)}{56.7}
+\]
+\[
+sR(s) = -0.016A(s) - 0.425R(s) + 0.0203\Delta(s)
+\]
+
+\[
+\frac{s^2\Theta(s)}{56.7} = -0.016\frac{57.4\frac{s\Theta(s)}{56.7} + 0.232\Delta(s)}{s + 0.31} - 0.425\frac{s\Theta(s)}{56.7}+0.0203\Delta(s)
+\]
+
+
+\[
+s^2\Theta(s) = -0.016\frac{57.4s\Theta(s) + (56.7)(0.232)\Delta(s)}{s + 0.31} - 0.425s\Theta(s)+(56.7)(0.0203)\Delta(s)
+\]
+
+\[
+s^2\Theta(s) + 0.016\frac{57.4s\Theta(s)}{s + 0.31}  + 0.425s\Theta(s) = -0.016\frac{(56.7)(0.232)\Delta(s)}{s + 0.31} +(56.7)(0.0203)\Delta(s)
+\]
+
+\[
+(s^2 + 0.016\frac{57.4s}{s + 0.31}  + 0.425s)(\Theta(s)) = (-0.016\frac{(56.7)(0.232)}{s + 0.31} +(56.7)(0.0203))\Delta(s)
+\]
+
+\[
+\frac{\Theta(s)}{\Delta(s)} = \frac{(-0.016\frac{(56.7)(0.232)}{s + 0.31} +(56.7)(0.0203))}{(s^2 + 0.016\frac{57.4s}{s + 0.31}  + 0.425s)}
+\]
+
+\[
+\frac{\Theta(s)}{\Delta(s)} = \frac{\frac{-0.210}{s + 0.31} + 1.151}{s^2 + \frac{0.918s}{s + 0.31}  + 0.425s}
+\]
+
+\[
+G_s(s) = \frac{\Theta(s)}{\Delta(s)} = \frac{1.151s + 0.147}{s^3 + 0.735s^2 + 1.05s}
+\]
+
+\vspace{65mm}
+
+Then form the transfer function for the actuator
+
+\vspace{5mm}
+
+\[
+G_a(s) = \frac{1}{0.0145s + 1}
+\]
+\vspace{5mm}
+
+Now that this has been determined, consider the transfer function for the sensor
+
+\[G_m(s) = \frac{\exp(-0.0063s)}{0.0021s + 1}\]
+
+
+\vspace{5mm}
+
+Then define the controller transfer function, as a PID controller 
+\[
+G_c(s) = K_p + \frac{K_i}{s} + K_d s
+\]
+
+\vspace{5mm}
+
+
+Outlining the Open-Loop Dynamics
+
+\[
+G_{ol}(s) = \frac{X_m(s)}{U(s)} = G_c(s) \cdot G_a(s) \cdot G(s) \cdot G_m(s)
+\]
+
+\vspace{5mm}
+
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{Screenshot from 2025-03-27 09-48-37.png}
+    \caption{Block diagram of the control system for analysis with system inputs $U(s)$ and zero disturbance.}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\vspace{55mm}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{image.png}
+    \caption{Block diagram of the control system for analysis with disturbance $D(s)$ where set point is zero.}
+    \label{fig:enter-label}
+\end{figure}
+
+Note that $G_L(s) = \frac{X(s)}{D(s)}$ and that for stabilizing under disturbance, the elevator disturbance angle is zero and the plane is perfectly levelz.
+
+
+
+
+\end{document}
