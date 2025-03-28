@@ -1,20 +1,23 @@
 \documentclass[11pt]{article}
 \usepackage{amsmath,amssymb,graphicx,subcaption}
 \usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
 
 % ===== Title formatting =====
 \usepackage{titling}
 \pretitle{\begin{center}\Large\bfseries}  % Reduced title size
-\posttitle{\end{center}\vspace{-2em}}     % Compact spacing
-\preauthor{\begin{center}\small}          % Author size
+\posttitle{\end{center}\vspace{-1.5em}}  % Compact spacing
+\preauthor{\begin{center}\small}         % Author size
 \postauthor{\end{center}}
-\predate{\begin{center}\small\itshape}    % Date formatting
-\postdate{\end{center}}
+\predate{} % Clear date formatting
+\postdate{}
 
 % ===== Title content =====
 \title{Design of an Aircraft Pitch Controller}
 \author{Group 11}
-\date{\today}
+\date{} % Empty date
+
+
 
 \begin{document}
 \maketitle
@@ -25,12 +28,12 @@ G_s(s) = \frac{\Theta(s)}{\Delta(s)} = \frac{1.151s + 0.147}{s^3 + 0.735s^2 + 1.
 \]
 \[
 G_{ol}(s) = G_c(s) \cdot G_a(s) \cdot G(s) \cdot G_m(s)=(K_p \;+\;  K_d\,s) \frac{e^{-0.0063s}(1.151s + 0.147)}{(s^3 + 0.735s^2 + 1.05s)(0.0145s+1)(0.0021s+1)}
-\]where, PD controller was chosen beacuse there is a orginal at pole
+\]where, PD controller was chosen beacuse there is a pole at orgian point.
 
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.8\textwidth]{open-dynamics.png}
+  \includegraphics[width=0.8\textwidth]{下载 (1).png}
   \caption{Left is Open-loop with Step Response,Right is Open-loop with Impulse Response}
   \label{fig:example}
 \end{figure}
@@ -42,8 +45,7 @@ Where Figure 1 shows Open loop system is unstable.
 \caption{Block diagram where $ X(s)$ is $ \theta$, $U(s)$ is setpoint.}
 \end{figure}
 
-\section{Controller Design and Closed-Loop Performance}
-
+\[K_s=5, \quad K_d = 5.\] was choosen as simulation.clik \href{https://colab.research.google.com/drive/1GY9yg5fcCdZbC4jmFU-aEa4xfa2qQ7Wd?usp=sharing}{here} see code
 \begin{figure}
 \centering
 \includegraphics[width=0.45\textwidth]{H5_1.png}
@@ -51,13 +53,18 @@ Where Figure 1 shows Open loop system is unstable.
 \end{figure}
 
 \begin{enumerate}
-  \item \textbf{\( G_{o1}(s) \) satisfy:at most a single pole allowed at the origin } \\
-  \item \textbf{Existence of phase crossover frequencies \( \omega_{co,k}=45^\circ \) } \\
-  \item \textbf{Meets first crossover$|G_{o1}(j\omega_{co,k})| =0.11(-19.44dB) $ ,and meet $k-th$ order too} \\ 
+  \item \small\textbf{Pole constraint of $G_{o1}(s)$:}  
+    All poles (-4,-6,-3+0.9j,-3-j, 0) satisfy $\mathrm{Re}(p_i) < 0$ with at most a single pole at $s = 0$.
+    
+  \item \small\textbf{Phase crossover frequencies:}  
+    Exist $k \in \mathbb{N}$ such that $\angle G_{o1}(j\omega_{co,k}) = -45.01˚ - 360^\circ k$.
+    
+  \item \small\textbf{Magnitude condition:}  
+    At all   
+    $|G_{o1}(j\omega_{co,k})| = 0.11$ $(-19.44\,\mathrm{dB}) < 1$ for $k = 1,2,...$
 \end{enumerate}
- 
 
-\section{Margin Stability}
+\subsection{Margin Stability}
 By Pantelis Sopasakis's source margins code.
 It can found delay margin:
 \begin{equation*}
@@ -73,9 +80,9 @@ It can found delay margin:
 which prove system have good robustness.
 
 
-\section{Step and Impulse Responses}
+\subsection{Step and Impulse Responses}
 
-Below shows good performce of rejection of diturbence,and get zero offset.
+Firgure 4 shows good performce of rejection of diturbence,and get zero offset.clik \href{https://colab.research.google.com/drive/1uBnb5ELVSpdlkgEdxMvfKnIdxPXh5TGo?usp=sharing}{here} see code
 
 \begin{figure}
   \centering
@@ -83,11 +90,6 @@ Below shows good performce of rejection of diturbence,and get zero offset.
   \caption{Left is Close-loop with Step Response,Right is Close-loop with Impulse Response,with setpoint is $10$ degree}
   \label{fig:example}
 \end{figure}
-
-
-
-
-
 
 
 \end{document}
